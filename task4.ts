@@ -1,15 +1,24 @@
 // Написать свой метод myFilter в прототипе массивов
-const arr = [1, 5, -4, 3, -2, 0];
+const arr = [1, 5, -4, 3, -2, 0]; // исходный массив чисел для проверки метода
 
-Array.prototype.myFilter = function <T>(func: (value: T, index: number, array: T[]) => boolean): T[] {
-  const result: T[] = [];
+// Добавляем собственный метод myFilter в прототип Array —
+// после этого он становится доступен у всех массивов
+Array.prototype.myFilter = function <T>(
+  func: (value: T, index: number, array: T[]) => boolean, // функция-предикат: возвращает true, если элемент нужно оставить
+): T[] {
+  // возвращаем новый массив из элементов того же типа T
+  const result: T[] = []; // массив, в который собираем отфильтрованные элементы
   for (let index = 0; index < this.length; index++) {
-    const value = this[index];
+    // this — массив, у которого вызвали метод; перебираем все его индексы
+    const value = this[index]; // текущий элемент массива
     if (func(value, index, this)) {
-      result.push(value);
+      // вызываем предикат с теми же аргументами, что и у встроенного filter:
+      // значение, индекс и сам исходный массив
+      result.push(value); // предикат вернул true — добавляем элемент в результат
     }
   }
-  return result;
+  return result; // возвращаем новый массив (исходный не изменяется)
 };
 
+// вызываем myFilter и оставляем только положительные числа: [1, 5, 3]
 console.log(arr.myFilter((value) => value > 0));
